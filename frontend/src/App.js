@@ -100,7 +100,7 @@ export default class App extends React.Component {
                       Выберите конечную дату периода:
                     </p>
                     <DatePicker
-                      selected={new Date('2019-01-30')}
+                      selected={new Date(this.state.startDate)}
                       onChange={this.handleEndDateChange}
                       maxDate={new Date('2019-12-31')}
                       minDate={new Date('2019-01-01')}
