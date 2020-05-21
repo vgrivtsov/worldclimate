@@ -6,7 +6,7 @@ import ru from 'date-fns/locale/ru';
 import moment from "moment";
 import "../node_modules/react-datepicker/dist/react-datepicker.css";
 import ReactEcharts from 'echarts-for-react';
-import "./bootstrap/dist/css/bootstrap.min.css";
+import "./dist/css/bootstrap.min.css";
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import "./styles.css";
