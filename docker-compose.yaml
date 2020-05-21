@@ -1,0 +1,58 @@
+version: '3'
+services:
+  postgres:
+    build: 
+      context: .
+      dockerfile: docker/local/postgres/Dockerfile
+    image:  postgres:12.2
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin_dev
+      - POSTGRES_DB=worldclim
+      - PGDATA=/home/postgresql/data
+    volumes:
+      - db_data:/home/postgresql
+      - db_data:/var/log/postgresql
+      - ./postgresql.conf:/etc/postgresql.conf
+    command: postgres -c config_file=/etc/postgresql.conf
+    networks:
+      - net
+    ports:
+      - 5433:5432
+
+  django:
+    build: 
+      context: .
+      dockerfile: docker/local/django/Dockerfile
+    image: worldclim_site:latest
+    command: >
+        bash -c "python manage.py migrate
+        && python manage.py runserver 0.0.0.0:8005"
+    networks:
+      - net
+    volumes:
+      - ./:/home/worldclim/
+    ports:
+      - 8005:8005
+    depends_on:
+      - postgres
+
+  react:
+    build:
+      context: .
+      dockerfile: docker/local/react/Dockerfile
+    image: woldclim_react
+    depends_on:
+      - django
+    volumes:
+      - ./frontend:/frontend
+      - /frontend/node_modules
+    ports:
+      - "3000:3000"
+
+
+networks:
+  net:
+
+volumes:
+  db_data:
